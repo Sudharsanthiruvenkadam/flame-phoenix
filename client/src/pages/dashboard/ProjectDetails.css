@@ -1,0 +1,142 @@
+﻿.project-details-page {
+  min-height: 100vh;
+  background: #fffaf6;
+  color: #29211d;
+}
+
+.project-details-content {
+  width: min(900px, 90%);
+  margin: 0 auto;
+  padding: 40px 0 60px;
+}
+
+.details-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #bd4d15;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.project-details-content > h1 {
+  margin: 12px 0 8px;
+  font-size: clamp(30px, 5vw, 42px);
+}
+
+.details-intro {
+  color: #766b64;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.details-card {
+  padding: 26px;
+  border: 1px solid #f0e1d6;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(80, 42, 20, 0.04);
+}
+
+.details-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.details-title-row h2 {
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+
+.details-label {
+  display: block;
+  color: #8a766a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+
+.details-type {
+  color: #766b64;
+  margin-top: 0;
+}
+
+.details-section {
+  border-top: 1px solid #f0e5dc;
+  margin-top: 24px;
+  padding-top: 20px;
+}
+
+.details-section h3 {
+  margin-top: 0;
+}
+
+.details-description {
+  color: #5f544d;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 26px 0;
+}
+
+.details-field {
+  padding: 16px;
+  background: #fffaf6;
+  border: 1px solid #f0e5dc;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.details-field strong {
+  font-size: 14px;
+}
+
+.details-message {
+  color: #766b64;
+}
+
+.details-error {
+  color: #b42318;
+  line-height: 1.6;
+}
+
+.details-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 9px;
+  background: #c45116;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 750;
+}
+
+.details-button:hover {
+  background: #a84412;
+}
+
+@media (max-width: 600px) {
+  .details-card {
+    padding: 18px;
+  }
+
+  .details-title-row {
+    flex-direction: column;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}

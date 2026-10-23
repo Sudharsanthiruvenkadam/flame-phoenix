@@ -1,0 +1,15 @@
+﻿const express = require('express');
+const { protect, authorize } = require('../middleware/authMiddleware');
+const {
+  createProject,
+  getMyProjects,
+} = require('../controllers/projectController');
+
+const router = express.Router();
+
+router.use(protect, authorize('CLIENT'));
+
+router.post('/', createProject);
+router.get('/my', getMyProjects);
+
+module.exports = router;

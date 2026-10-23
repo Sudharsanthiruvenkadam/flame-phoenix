@@ -1,0 +1,142 @@
+﻿import {
+  ArrowRight,
+  Target,
+  Eye,
+  Lightbulb,
+  ShieldCheck,
+  Users,
+  Workflow,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import "./PublicPages.css";
+
+const values = [
+  {
+    icon: ShieldCheck,
+    title: "Trust & Responsibility",
+    description:
+      "We value transparent communication, dependable solutions, and responsible technology.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Innovation",
+    description:
+      "We explore practical ideas and modern technologies to solve real-world problems.",
+  },
+  {
+    icon: Users,
+    title: "Client Partnership",
+    description:
+      "We listen to client requirements and work together toward meaningful outcomes.",
+  },
+  {
+    icon: Workflow,
+    title: "Practical Excellence",
+    description:
+      "We focus on usability, quality, and continuous improvement throughout development.",
+  },
+];
+
+function About() {
+  return (
+    <main className="public-page">
+      <section className="public-hero">
+        <span className="public-eyebrow">ABOUT FLAME PHOENIX</span>
+        <h1>
+          Your Trust Is Our <span>Responsibility.</span>
+        </h1>
+        <p>
+          We build meaningful digital solutions by combining technology,
+          creativity, and a commitment to understanding our clients.
+        </p>
+        <Link to="/contact" className="public-button">
+          Let's Discuss Your Idea <ArrowRight size={18} />
+        </Link>
+      </section>
+
+      <section className="public-section about-intro">
+        <div>
+          <span className="public-eyebrow">WHO WE ARE</span>
+          <h2>Technology with a purpose.</h2>
+        </div>
+        <p>
+          Flame Phoenix is focused on developing digital solutions that
+          address practical business and everyday challenges. From web
+          applications and mobile experiences to AI-powered systems and
+          connected devices, our goal is to turn ideas into useful,
+          reliable products.
+        </p>
+      </section>
+
+      <section className="public-section">
+        <div className="public-section-heading">
+          <span className="public-eyebrow">OUR DIRECTION</span>
+          <h2>Mission & Vision</h2>
+          <p>
+            Guided by client needs, responsible development, and continuous
+            learning.
+          </p>
+        </div>
+
+        <div className="public-card-grid two-columns">
+          <article className="public-card">
+            <div className="public-icon">
+              <Target size={25} />
+            </div>
+            <h3>Our Mission</h3>
+            <p>
+              To create accessible, dependable, and practical technology
+              solutions that help clients transform their ideas into
+              meaningful digital outcomes.
+            </p>
+          </article>
+
+          <article className="public-card">
+            <div className="public-icon">
+              <Eye size={25} />
+            </div>
+            <h3>Our Vision</h3>
+            <p>
+              To become a trusted technology partner known for innovation,
+              quality, collaboration, and solutions that create lasting
+              value.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section className="public-section values-section">
+        <div className="public-section-heading">
+          <span className="public-eyebrow">WHAT GUIDES US</span>
+          <h2>Our approach to technology</h2>
+          <p>
+            Every project begins with understanding the problem before
+            selecting the technology.
+          </p>
+        </div>
+
+        <div className="public-card-grid">
+          {values.map(({ icon: Icon, title, description }) => (
+            <article className="public-card" key={title}>
+              <div className="public-icon">
+                <Icon size={24} />
+              </div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="public-cta">
+        <h2>Have an idea you'd like to explore?</h2>
+        <p>Start with a free initial discussion about your requirements.</p>
+        <Link to="/contact" className="public-button">
+          Start a Discussion <ArrowRight size={18} />
+        </Link>
+      </section>
+    </main>
+  );
+}
+
+export default About;
