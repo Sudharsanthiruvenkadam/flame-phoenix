@@ -14,3 +14,10 @@ build/
 *.backup
 *.fix-backup
 *.staff-backup
+
+# Backup files
+*.bak
+*.bak.*
+*.backup
+*.fix-backup
+*.staff-backup

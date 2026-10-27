@@ -1,4 +1,5 @@
-﻿import { useEffect, useState } from "react";
+﻿
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Flame,
@@ -8,8 +9,10 @@ import {
   Users,
   LogOut,
 } from "lucide-react";
+
 import "../PublicPages.css";
 import "./Dashboard.css";
+import StaffDashboard from "./StaffDashboard";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -50,12 +53,27 @@ function Dashboard() {
   }
 
   if (!user) {
-    return <main className="dashboard-loading">Loading workspace...</main>;
+    return (
+      <main className="dashboard-loading">
+        Loading workspace...
+      </main>
+    );
   }
 
   const role = String(user.role || "").toUpperCase();
   const roleName = role.charAt(0) + role.slice(1).toLowerCase();
 
+  // Display the dedicated workforce dashboard for staff.
+  if (role === "STAFF") {
+    return (
+      <StaffDashboard
+        user={user}
+        onLogout={handleLogout}
+      />
+    );
+  }
+
+  // Existing client and admin workspace cards.
   const dashboardCards = {
     CLIENT: [
       {
@@ -67,19 +85,6 @@ function Dashboard() {
         icon: ClipboardList,
         title: "Project Requirements",
         description: "Keep your project needs organized.",
-      },
-    ],
-
-    STAFF: [
-      {
-        icon: FolderKanban,
-        title: "Assigned Projects",
-        description: "Review the projects assigned to you.",
-      },
-      {
-        icon: ClipboardList,
-        title: "Work Updates",
-        description: "Track tasks and work progress.",
       },
     ],
 
@@ -145,10 +150,12 @@ function Dashboard() {
         <div className="dashboard-grid">
           {dashboardCards[role].map((card) => {
             const Icon = card.icon;
-
             let destination = "#";
 
-            if (role === "CLIENT" && card.title === "My Projects") {
+            if (
+              role === "CLIENT" &&
+              card.title === "My Projects"
+            ) {
               destination = "/dashboard/projects";
             } else if (
               role === "ADMIN" &&
@@ -160,15 +167,13 @@ function Dashboard() {
               card.title === "User Management"
             ) {
               destination = "/dashboard/admin/users";
-            } else if (
-              role === "STAFF" &&
-              card.title === "Assigned Projects"
-            ) {
-              destination = "/dashboard/staff/projects";
             }
 
             return (
-              <article className="dashboard-card" key={card.title}>
+              <article
+                className="dashboard-card"
+                key={card.title}
+              >
                 <span className="dashboard-card-icon">
                   <Icon size={24} />
                 </span>
@@ -199,3 +204,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
