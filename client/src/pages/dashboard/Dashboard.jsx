@@ -6,13 +6,11 @@ import {
   LayoutDashboard,
   FolderKanban,
   ClipboardList,
-  Users,
   LogOut,
 } from "lucide-react";
 
 import "../PublicPages.css";
 import "./Dashboard.css";
-import StaffDashboard from "./StaffDashboard";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -31,7 +29,8 @@ function Dashboard() {
       const parsedUser = JSON.parse(savedUser);
       const role = String(parsedUser.role || "").toUpperCase();
 
-      if (!["CLIENT", "STAFF", "ADMIN"].includes(role)) {
+      // Only CLIENT users can access this dashboard.
+      if (role !== "CLIENT") {
         localStorage.removeItem("fp_user");
         localStorage.removeItem("fp_token");
         navigate("/login/client", { replace: true });
@@ -60,47 +59,20 @@ function Dashboard() {
     );
   }
 
-  const role = String(user.role || "").toUpperCase();
-  const roleName = role.charAt(0) + role.slice(1).toLowerCase();
-
-  // Display the dedicated workforce dashboard for staff.
-  if (role === "STAFF") {
-    return (
-      <StaffDashboard
-        user={user}
-        onLogout={handleLogout}
-      />
-    );
-  }
-
-  // Existing client and admin workspace cards.
-  const dashboardCards = {
-    CLIENT: [
-      {
-        icon: FolderKanban,
-        title: "My Projects",
-        description: "View and track your submitted projects.",
-      },
-      {
-        icon: ClipboardList,
-        title: "Project Requirements",
-        description: "Keep your project needs organized.",
-      },
-    ],
-
-    ADMIN: [
-      {
-        icon: FolderKanban,
-        title: "All Projects",
-        description: "Oversee company project progress.",
-      },
-      {
-        icon: Users,
-        title: "User Management",
-        description: "Manage access to company workspaces.",
-      },
-    ],
-  };
+  const dashboardCards = [
+    {
+      icon: FolderKanban,
+      title: "My Projects",
+      description: "View and track your submitted projects.",
+      destination: "/dashboard/projects",
+    },
+    {
+      icon: ClipboardList,
+      title: "Project Requirements",
+      description: "Keep your project needs organized.",
+      destination: "#",
+    },
+  ];
 
   return (
     <main className="dashboard-page">
@@ -126,13 +98,13 @@ function Dashboard() {
         <div className="dashboard-welcome">
           <span className="dashboard-eyebrow">
             <LayoutDashboard size={16} />
-            {roleName} Workspace
+            Client Workspace
           </span>
 
           <h1>Welcome, {user.name}!</h1>
 
           <p>
-            Here is your {roleName.toLowerCase()} workspace at Flame Phoenix.
+            Here is your client workspace at Flame Phoenix.
           </p>
         </div>
 
@@ -142,32 +114,14 @@ function Dashboard() {
             <strong>{user.email}</strong>
           </div>
 
-          <span className="dashboard-role">{roleName}</span>
+          <span className="dashboard-role">Client</span>
         </div>
 
         <h2>Your Workspace</h2>
 
         <div className="dashboard-grid">
-          {dashboardCards[role].map((card) => {
+          {dashboardCards.map((card) => {
             const Icon = card.icon;
-            let destination = "#";
-
-            if (
-              role === "CLIENT" &&
-              card.title === "My Projects"
-            ) {
-              destination = "/dashboard/projects";
-            } else if (
-              role === "ADMIN" &&
-              card.title === "All Projects"
-            ) {
-              destination = "/dashboard/admin/projects";
-            } else if (
-              role === "ADMIN" &&
-              card.title === "User Management"
-            ) {
-              destination = "/dashboard/admin/users";
-            }
 
             return (
               <article
@@ -182,9 +136,9 @@ function Dashboard() {
 
                 <p>{card.description}</p>
 
-                {destination !== "#" ? (
+                {card.destination !== "#" ? (
                   <Link
-                    to={destination}
+                    to={card.destination}
                     className="dashboard-card-action"
                   >
                     Open Workspace →
@@ -204,4 +158,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-

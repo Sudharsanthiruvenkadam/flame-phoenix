@@ -1,13 +1,13 @@
 ﻿
-require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+require('dotenv').config({
+  path: require('path').join(__dirname, '.env'),
+});
 
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const path = require('path');
-const fs = require('fs');
 
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
@@ -17,18 +17,33 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const clientDistPath = path.join(__dirname, '../client/dist');
-const clientIndexPath = path.join(clientDistPath, 'index.html');
+// Allow both Client and Employee/Admin websites
+const allowedOrigins = (
+  process.env.CLIENT_URLS ||
+  process.env.CLIENT_URL ||
+  'http://localhost:5173,http://localhost:5175'
+)
+  .split(',')
+  .map((url) => url.trim())
+  .filter(Boolean);
 
-// Security and request middleware
+// Security middleware
 app.use(helmet());
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Origin not allowed by CORS'));
+  },
 }));
+
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
 
-// Health check
+// API health check
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
     success: true,
@@ -38,11 +53,17 @@ app.get('/api/health', (_req, res) => {
 
 // Authentication routes
 app.use('/api/auth', authRoutes);
+
+// Project routes
 app.use('/api/projects', projectRoutes);
+
+// Employee routes
 app.use('/api/staff', staffRoutes);
+
+// Admin routes
 app.use('/api/admin', adminRoutes);
 
-// Return JSON for unknown API endpoints
+// Handle unknown API endpoints
 app.use('/api', (_req, res) => {
   res.status(404).json({
     success: false,
@@ -50,35 +71,20 @@ app.use('/api', (_req, res) => {
   });
 });
 
-// Serve the built React frontend
-if (fs.existsSync(clientIndexPath)) {
-  app.use(express.static(clientDistPath));
-
-  // Support React routes such as /login/client
-  app.use((req, res, next) => {
-    if (req.method !== 'GET' || req.path.startsWith('/api')) {
-      return next();
-    }
-
-    res.sendFile(clientIndexPath);
-  });
-} else {
-  console.warn('Frontend build not found. Run the client build first.');
-}
-
 // Connect to MongoDB and start the server
 async function startServer() {
   try {
     if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI is missing from server/.env');
+      throw new Error('MONGO_URI is missing from the environment');
     }
 
     await mongoose.connect(process.env.MONGO_URI);
+
     console.log('MongoDB connected successfully');
 
     app.listen(PORT, '0.0.0.0', () => {
-      console.log(`Flame Phoenix server running on port ${PORT}`);
-      console.log(`Frontend build path: ${clientDistPath}`);
+      console.log(`Flame Phoenix API running on port ${PORT}`);
+      console.log('Allowed frontend origins:', allowedOrigins);
     });
   } catch (error) {
     console.error('Server startup failed:', error.message);
@@ -87,6 +93,3 @@ async function startServer() {
 }
 
 startServer();
-
-
-

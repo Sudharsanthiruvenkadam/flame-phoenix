@@ -1,4 +1,3 @@
-
 import {
   ArrowRight,
   Code2,
@@ -37,6 +36,7 @@ function App() {
       <Navbar />
 
       <main>
+        {/* Hero Section */}
         <section className="hero" id="home">
           <div className="hero-content">
             <img
@@ -63,6 +63,7 @@ function App() {
           </div>
         </section>
 
+        {/* Services Section */}
         <section className="services-section" id="services">
           <div className="section-heading">
             <span className="section-label">WHAT WE DO</span>
@@ -94,13 +95,16 @@ function App() {
           </div>
         </section>
 
+        {/* Client Portal Section */}
         <section className="projects-section" id="projects">
           <div className="section-heading">
             <span className="section-label">OUR WORKSPACE</span>
+
             <h2>Ideas become real projects.</h2>
+
             <p>
-              Explore the Flame Phoenix workspace for clients,
-              staff members, and administrators.
+              Access your Flame Phoenix client workspace to submit
+              projects and track their progress.
             </p>
           </div>
 
@@ -108,17 +112,10 @@ function App() {
             <a href="/login/client" className="portal-link">
               Client Portal <ArrowRight size={17} />
             </a>
-
-            <a href="/login/staff" className="portal-link">
-              Staff Portal <ArrowRight size={17} />
-            </a>
-
-            <a href="/login/admin" className="portal-link">
-              Admin Portal <ArrowRight size={17} />
-            </a>
           </div>
         </section>
 
+        {/* Contact Section */}
         <section className="contact-section" id="contact">
           <span className="section-label">LET'S WORK TOGETHER</span>
 
@@ -135,6 +132,7 @@ function App() {
         </section>
       </main>
 
+      {/* Footer */}
       <footer id="about">
         <a className="footer-brand" href="/">
           <img src={phoenixLogo} alt="Flame Phoenix" />

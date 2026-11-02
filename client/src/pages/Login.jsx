@@ -1,17 +1,16 @@
-﻿
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+﻿import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Flame,
   LockKeyhole,
   Mail,
 } from "lucide-react";
+
 import { loginUser } from "../services/api";
 import "./Auth.css";
 
 function Login() {
-  const { role = "client" } = useParams();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -19,21 +18,9 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const allowedRoles = ["client", "staff", "admin"];
-  const normalizedRole = role.toLowerCase();
-
-  const title =
-    normalizedRole.charAt(0).toUpperCase() +
-    normalizedRole.slice(1);
-
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
-
-    if (!allowedRoles.includes(normalizedRole)) {
-      setError("Invalid login portal.");
-      return;
-    }
 
     setLoading(true);
 
@@ -41,7 +28,7 @@ function Login() {
       const result = await loginUser({
         email: email.trim(),
         password,
-        role: normalizedRole.toUpperCase(),
+        role: "CLIENT",
       });
 
       if (!result?.success || !result?.token || !result?.user) {
@@ -49,18 +36,16 @@ function Login() {
         return;
       }
 
-      // Verify the returned account matches this portal.
-      if (result.user.role !== normalizedRole.toUpperCase()) {
-        setError("This account cannot access this login portal.");
+      // Only CLIENT accounts can access this portal.
+      if (String(result.user.role).toUpperCase() !== "CLIENT") {
+        setError("This portal is only for client accounts.");
         return;
       }
 
-      // Store the authenticated session.
+      // Store the authenticated client session.
       localStorage.setItem("fp_token", result.token);
       localStorage.setItem("fp_user", JSON.stringify(result.user));
 
-      // Navigate to the appropriate workspace.
-      // Dashboard pages and protected routes will be added next.
       navigate("/dashboard", { replace: true });
     } catch (err) {
       console.error("Login error:", err);
@@ -72,9 +57,7 @@ function Login() {
       } else if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setError(
-          "Login failed unexpectedly. Please try again."
-        );
+        setError("Login failed unexpectedly. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -94,13 +77,13 @@ function Login() {
         </div>
 
         <p className="auth-eyebrow">
-          FLAME PHOENIX WORKSPACE
+          FLAME PHOENIX CLIENT PORTAL
         </p>
 
-        <h1>{title} Login</h1>
+        <h1>Client Login</h1>
 
         <p className="auth-description">
-          Sign in to continue to your Flame Phoenix workspace.
+          Sign in to access your Flame Phoenix client workspace.
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -154,14 +137,12 @@ function Login() {
           </button>
         </form>
 
-        {normalizedRole === "client" && (
-          <p className="auth-switch">
-            New client?{" "}
-            <Link to="/register">
-              Create an account
-            </Link>
-          </p>
-        )}
+        <p className="auth-switch">
+          New client?{" "}
+          <Link to="/register">
+            Create an account
+          </Link>
+        </p>
 
         <p className="auth-footer">
           Secure access to Flame Phoenix
