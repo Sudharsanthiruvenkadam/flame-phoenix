@@ -13,6 +13,7 @@ const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const staffRoutes = require('./routes/staffRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -62,6 +63,9 @@ app.use('/api/staff', staffRoutes);
 
 // Admin routes
 app.use('/api/admin', adminRoutes);
+
+// Public company contact route
+app.use('/api/contact', contactRoutes);
 
 // Handle unknown API endpoints
 app.use('/api', (_req, res) => {

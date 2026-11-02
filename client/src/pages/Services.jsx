@@ -1,3 +1,4 @@
+
 import Navbar from "../components/Navbar";
 import {
   ArrowRight,
@@ -58,63 +59,79 @@ const services = [
 
 function Services() {
   return (
-    <><Navbar /><main className="public-page">
-      <section className="public-hero">
-        <span className="public-eyebrow">WHAT WE DO</span>
-        <h1>
-          Technology that moves your ideas <span>forward.</span>
-        </h1>
-        <p>
-          Explore practical digital services designed to turn your requirements
-          into useful, reliable, and scalable solutions.
-        </p>
-        <Link to="/contact" className="public-button">
-          Discuss Your Project <ArrowRight size={18} />
-        </Link>
-      </section>
+    <>
+      <Navbar />
 
-      <section className="public-section">
-        <div className="public-section-heading">
-          <span className="public-eyebrow">OUR SERVICES</span>
-          <h2>Solutions for your next big idea</h2>
+      <main className="public-page">
+
+        {/* OUR SERVICES - DISPLAY FIRST */}
+        <section className="public-section">
+          <div className="public-section-heading">
+            <span className="public-eyebrow">OUR SERVICES</span>
+            <h1>Solutions for your next big idea</h1>
+            <p>
+              Tell us what you want to achieve. We can discuss the right
+              approach for your project.
+            </p>
+          </div>
+
+          <div className="public-card-grid">
+            {services.map(({ icon: Icon, title, description, features }) => (
+              <article className="public-card service-card" key={title}>
+                <div className="public-icon">
+                  <Icon size={25} />
+                </div>
+
+                <h3>{title}</h3>
+
+                <p>{description}</p>
+
+                <ul className="service-features">
+                  {features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+
+                <Link to="/contact" className="service-link">
+                  Enquire about this service <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* WHAT WE DO - DISPLAY AFTER SERVICES */}
+        <section className="public-hero">
+          <span className="public-eyebrow">WHAT WE DO</span>
+
+          <h1>
+            Technology that moves your ideas <span>forward.</span>
+          </h1>
+
           <p>
-            Tell us what you want to achieve. We can discuss the right approach
-            for your project.
+            Explore practical digital services designed to turn your
+            requirements into useful, reliable, and scalable solutions.
           </p>
-        </div>
 
-        <div className="public-card-grid">
-          {services.map(({ icon: Icon, title, description, features }) => (
-            <article className="public-card service-card" key={title}>
-              <div className="public-icon">
-                <Icon size={25} />
-              </div>
-              <h3>{title}</h3>
-              <p>{description}</p>
-              <ul className="service-features">
-                {features.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-              <Link to="/contact" className="service-link">
-                Enquire about this service <ArrowRight size={16} />
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
+          <Link to="/contact" className="public-button">
+            Discuss Your Project <ArrowRight size={18} />
+          </Link>
+        </section>
+        {/* ENQUIRY SECTION */}
+        <section className="public-cta">
+          <h2>Not sure which service you need?</h2>
+          <p>
+            Start with a free initial discussion and tell us about your idea,
+            goals, and requirements.
+          </p>
 
-      <section className="public-cta">
-        <h2>Not sure which service you need?</h2>
-        <p>
-          Start with a free initial discussion and tell us about your idea,
-          goals, and requirements.
-        </p>
-        <Link to="/contact" className="public-button">
-          Let's Talk <ArrowRight size={18} />
-        </Link>
-      </section>
-    </main></>
+          <Link to="/contact" className="public-button">
+            Let's Talk <ArrowRight size={18} />
+          </Link>
+        </section>
+
+      </main>
+    </>
   );
 }
 
