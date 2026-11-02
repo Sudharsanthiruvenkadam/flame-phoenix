@@ -25,8 +25,8 @@ function AdminLayout({ user, onLogout }) {
       icon: FolderKanban,
     },
     {
-      label: "Staff Management",
-      path: "/admin/staff",
+      label: "Employee Management",
+      path: "/admin/employee",
       icon: Users,
     },
     {

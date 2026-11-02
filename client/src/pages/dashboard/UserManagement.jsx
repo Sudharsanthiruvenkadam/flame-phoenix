@@ -52,7 +52,7 @@ function UserManagement() {
   const summary = useMemo(() => ({
     total: users.length,
     clients: users.filter((u) => u.role === "CLIENT").length,
-    staff: users.filter((u) => u.role === "STAFF").length,
+    employee: users.filter((u) => u.role === "STAFF").length,
     admins: users.filter((u) => u.role === "ADMIN").length,
     active: users.filter((u) => u.isActive !== false).length,
     inactive: users.filter((u) => u.isActive === false).length,
@@ -107,7 +107,7 @@ function UserManagement() {
 
         <h1>User Management</h1>
         <p className="user-management-intro">
-          Manage visibility of client, staff, and admin accounts
+          Manage visibility of client, employees, and admin accounts
           in your Flame Phoenix workspace.
         </p>
 
@@ -124,7 +124,7 @@ function UserManagement() {
         <div className="user-management-stats">
           {[
             ["Clients", summary.clients],
-            ["Staff", summary.staff],
+            ["Employee", summary.employee],
             ["Admins", summary.admins],
             ["Active", summary.active],
             ["Inactive", summary.inactive],
@@ -159,7 +159,7 @@ function UserManagement() {
             >
               <option value="ALL">All roles</option>
               <option value="CLIENT">Clients</option>
-              <option value="STAFF">Staff</option>
+              <option value="STAFF">Employee</option>
               <option value="ADMIN">Admins</option>
             </select>
           </label>

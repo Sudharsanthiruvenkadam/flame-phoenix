@@ -43,10 +43,10 @@ function formatStatus(status) {
 
 function WorkTracking() {
   const [projects, setProjects] = useState([]);
-  const [staff, setStaff] = useState([]);
+  const [employee, setEmployee] = useState([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [staffFilter, setStaffFilter] = useState("ALL");
+  const [employeeFilter, setEmployeeFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -55,13 +55,13 @@ function WorkTracking() {
       setLoading(true);
       setError("");
 
-      const [projectResponse, staffResponse] = await Promise.all([
+      const [projectResponse, employeeResponse] = await Promise.all([
         getAdminProjects(),
         getAdminStaff(),
       ]);
 
       setProjects(projectResponse.projects || []);
-      setStaff(staffResponse.staff || []);
+      setEmployee(employeeResponse.employee || []);
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -84,21 +84,21 @@ function WorkTracking() {
         !searchText ||
         project.name?.toLowerCase().includes(searchText) ||
         project.client?.name?.toLowerCase().includes(searchText) ||
-        project.assignedStaff?.name?.toLowerCase().includes(searchText) ||
-        project.assignedStaff?.email?.toLowerCase().includes(searchText);
+        project.assignedEmployee?.name?.toLowerCase().includes(searchText) ||
+        project.assignedEmployee?.email?.toLowerCase().includes(searchText);
 
       const matchesStatus =
         statusFilter === "ALL" || project.status === statusFilter;
 
-      const matchesStaff =
-        staffFilter === "ALL" ||
-        (staffFilter === "UNASSIGNED"
-          ? !project.assignedStaff
-          : project.assignedStaff?.id === staffFilter);
+      const matchesEmployee =
+        employeeFilter === "ALL" ||
+        (employeeFilter === "UNASSIGNED"
+          ? !project.assignedEmployee
+          : project.assignedEmployee?.id === employeeFilter);
 
-      return matchesSearch && matchesStatus && matchesStaff;
+      return matchesSearch && matchesStatus && matchesEmployee;
     });
-  }, [projects, search, statusFilter, staffFilter]);
+  }, [projects, search, statusFilter, employeeFilter]);
 
   const inProgressCount = projects.filter(
     (project) => project.status === "IN_PROGRESS"
@@ -109,12 +109,12 @@ function WorkTracking() {
   ).length;
 
   const assignedCount = projects.filter(
-    (project) => project.assignedStaff
+    (project) => project.assignedEmployee
   ).length;
 
-  const assignedStaffCount = new Set(
+  const assignedEmployeeCount = new Set(
     projects
-      .map((project) => project.assignedStaff?.id)
+      .map((project) => project.assignedEmployee?.id)
       .filter(Boolean)
   ).size;
 
@@ -163,8 +163,8 @@ function WorkTracking() {
 
         <div className="tracking-stat-card">
           <span className="tracking-stat-icon">👥</span>
-          <p>Active Staff Assigned</p>
-          <h2>{assignedStaffCount}</h2>
+          <p>Active Employees Assigned</p>
+          <h2>{assignedEmployeeCount}</h2>
         </div>
       </div>
 
@@ -203,12 +203,12 @@ function WorkTracking() {
           </select>
 
           <select
-            value={staffFilter}
-            onChange={(event) => setStaffFilter(event.target.value)}
+            value={employeeFilter}
+            onChange={(event) => setEmployeeFilter(event.target.value)}
           >
             <option value="ALL">All Employees</option>
             <option value="UNASSIGNED">Not Assigned</option>
-            {staff.map((employee) => (
+            {employee.map((employee) => (
               <option key={employee._id} value={employee._id}>
                 {employee.name}
               </option>
@@ -257,11 +257,11 @@ function WorkTracking() {
                     </td>
 
                     <td>
-                      {project.assignedStaff ? (
+                      {project.assignedEmployee ? (
                         <>
-                          <strong>{project.assignedStaff.name}</strong>
+                          <strong>{project.assignedEmployee.name}</strong>
                           <span className="tracking-secondary">
-                            {project.assignedStaff.email}
+                            {project.assignedEmployee.email}
                           </span>
                         </>
                       ) : (

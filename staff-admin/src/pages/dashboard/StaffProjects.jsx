@@ -1,4 +1,4 @@
-﻿import flamePhoenixLogo from "../../assets/flame-phoenix-logo.png";
+import flamePhoenixLogo from "../../assets/flame-phoenix-logo.png";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -31,7 +31,7 @@ function statusText(status) {
   return String(status || "SUBMITTED").replaceAll("_", " ");
 }
 
-function StaffProjects({ user, onLogout }) {
+function EmployeeProjects({ user, onLogout }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -41,7 +41,7 @@ function StaffProjects({ user, onLogout }) {
   const [savingId, setSavingId] = useState("");
   const [fallbackUser, setFallbackUser] = useState(null);
 
-  const staffUser = user || fallbackUser;
+  const employeeUser = user || fallbackUser;
 
   useEffect(() => {
     try {
@@ -123,12 +123,12 @@ function StaffProjects({ user, onLogout }) {
     }
   }
 
-  const name = staffUser?.name || "Staff Member";
+  const name = employeeUser?.name || "Employee";
 
   return (
     <div className="tasks-layout">
       <aside className="tasks-sidebar">
-        <Link to="/staff" className="tasks-brand">
+        <Link to="/employee" className="tasks-brand">
           <img className="tasks-brand-logo" src={flamePhoenixLogo} alt="Flame Phoenix logo" />
           <span>
             <strong>Flame Phoenix</strong>
@@ -138,10 +138,10 @@ function StaffProjects({ user, onLogout }) {
 
         <p className="tasks-nav-heading">MY WORKSPACE</p>
         <nav className="tasks-nav">
-          <Link to="/staff" className="tasks-nav-link">
+          <Link to="/employee" className="tasks-nav-link">
             <LayoutDashboard size={17} /> Dashboard
           </Link>
-          <Link to="/staff/projects" className="tasks-nav-link active">
+          <Link to="/employee/projects" className="tasks-nav-link active">
             <ClipboardList size={17} /> My Tasks
           </Link>
           <button className="tasks-nav-link" onClick={() => window.alert("Apply Leave is not connected yet.")}>
@@ -182,7 +182,7 @@ function StaffProjects({ user, onLogout }) {
       <main className="tasks-main">
         <header className="tasks-topbar">
           <strong>My Assigned Tasks</strong>
-          <span className="tasks-topbar-user">{staffUser?.email || "Staff account"}</span>
+          <span className="tasks-topbar-user">{employeeUser?.email || "Employee account"}</span>
         </header>
 
         <section className="tasks-content">
@@ -305,7 +305,7 @@ function StaffProjects({ user, onLogout }) {
   );
 }
 
-export default StaffProjects;
+export default EmployeeProjects;
 
 
 

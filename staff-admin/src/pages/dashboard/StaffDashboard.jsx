@@ -1,4 +1,4 @@
-﻿import flamePhoenixLogo from "../../assets/flame-phoenix-logo.png";
+import flamePhoenixLogo from "../../assets/flame-phoenix-logo.png";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -27,7 +27,7 @@ function statusLabel(status) {
   return String(status || "SUBMITTED").replaceAll("_", " ");
 }
 
-function StaffDashboard({ user, onLogout }) {
+function EmployeeDashboard({ user, onLogout }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -82,7 +82,7 @@ function StaffDashboard({ user, onLogout }) {
     p.status === "CHANGES_REQUESTED"
   );
 
-  const firstName = user?.name || "Staff Member";
+  const firstName = user?.name || "Employee";
 
   const cards = [
     { title: "ASSIGNED PROJECTS", value: stats.assigned, color: "blue", note: "All assigned work" },
@@ -118,20 +118,20 @@ function StaffDashboard({ user, onLogout }) {
   return (
     <div className={`sd-layout sd-theme-${theme}`}>
       <aside className="sd-sidebar">
-        <Link to="/staff" className="sd-brand">
+        <Link to="/employee" className="sd-brand">
           <img className="sd-brand-logo" src={flamePhoenixLogo} alt="Flame Phoenix logo" />
           <span>
             <strong>Flame Phoenix</strong>
-            <small>STAFF WORKSPACE</small>
+            <small>EMPLOYEE WORKSPACE</small>
           </span>
         </Link>
 
         <div className="sd-nav-heading">MY WORKSPACE</div>
         <nav className="sd-nav">
-          <Link to="/staff" className="sd-nav-link active">
+          <Link to="/employee" className="sd-nav-link active">
             <LayoutDashboard size={17} /> Dashboard
           </Link>
-          <Link to="/staff/projects" className="sd-nav-link">
+          <Link to="/employee/projects" className="sd-nav-link">
             <ClipboardList size={17} /> My Assigned Tasks
           </Link>
           
@@ -175,14 +175,14 @@ function StaffDashboard({ user, onLogout }) {
             <button className="sd-theme-button" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
               {theme === "light" ? "Dark mode" : "Light mode"}
             </button>
-            <span className="sd-topbar-user">{user?.email || "Staff account"}</span>
+            <span className="sd-topbar-user">{user?.email || "Employee account"}</span>
           </div>
         </header>
 
         <div className="sd-content">
           <section className="sd-welcome">
             <div>
-              <p className="sd-eyebrow">STAFF DASHBOARD</p>
+              <p className="sd-eyebrow">EMPLOYEE DASHBOARD</p>
               <h1>Good day, {firstName}.</h1>
               <p>Review your assignments and keep your project progress up to date.</p>
             </div>
@@ -190,7 +190,7 @@ function StaffDashboard({ user, onLogout }) {
               <button type="button" className="sd-button sd-button-secondary" onClick={loadProjects} disabled={loading}>
                 <RefreshCw size={16} /> Refresh
               </button>
-              <Link to="/staff/projects" className="sd-button sd-button-primary">
+              <Link to="/employee/projects" className="sd-button sd-button-primary">
                 View All My Tasks
               </Link>
             </div>
@@ -260,7 +260,7 @@ function StaffDashboard({ user, onLogout }) {
   );
 }
 
-export default StaffDashboard;
+export default EmployeeDashboard;
 
 
 

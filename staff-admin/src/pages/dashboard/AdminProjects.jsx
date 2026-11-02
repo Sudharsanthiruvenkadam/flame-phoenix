@@ -1,4 +1,4 @@
-﻿
+
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -18,15 +18,15 @@ import "./AdminProjects.css";
 
 function AdminProjects() {
   const [projects, setProjects] = useState([]);
-  const [staff, setStaff] = useState([]);
+  const [employee, setEmployee] = useState([]);
   const [assignments, setAssignments] = useState({});
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState("");
-  const [creatingStaff, setCreatingStaff] = useState(false);
+  const [creatingEmployee, setCreatingEmployee] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  const [staffForm, setStaffForm] = useState({
+  const [employeeForm, setEmployeeForm] = useState({
     name: "",
     email: "",
     password: "",
@@ -39,19 +39,19 @@ function AdminProjects() {
     setError("");
 
     try {
-      const [projectData, staffData] = await Promise.all([
+      const [projectData, employeeData] = await Promise.all([
         getAdminProjects(),
         getAdminStaff(),
       ]);
 
       const projectList = projectData.projects || [];
       setProjects(projectList);
-      setStaff(staffData.staff || []);
+      setEmployee(employeeData.employee || []);
 
       const currentAssignments = {};
       projectList.forEach((project) => {
         currentAssignments[project.id] =
-          project.assignedStaff?.id || "";
+          project.assignedEmployee?.id || "";
       });
 
       setAssignments(currentAssignments);
@@ -75,9 +75,9 @@ function AdminProjects() {
     setNotice("");
 
     try {
-      const staffId = assignments[projectId] || null;
+      const employeeId = assignments[projectId] || null;
 
-      await assignProjectToStaff(projectId, staffId);
+      await assignProjectToStaff(projectId, employeeId);
 
       setNotice("Project assignment updated successfully.");
       await loadData();
@@ -91,35 +91,35 @@ function AdminProjects() {
     }
   }
 
-  function updateStaffField(event) {
+  function updateEmployeeField(event) {
     const { name, value } = event.target;
 
-    setStaffForm((previous) => ({
+    setEmployeeForm((previous) => ({
       ...previous,
       [name]: value,
     }));
   }
 
-  async function handleCreateStaff(event) {
+  async function handleCreateEmployee(event) {
     event.preventDefault();
     setError("");
     setNotice("");
 
-    if (staffForm.password.length < 8) {
-      setError("Staff password must contain at least 8 characters.");
+    if (employeeForm.password.length < 8) {
+      setError("Employee password must contain at least 8 characters.");
       return;
     }
 
-    setCreatingStaff(true);
+    setCreatingEmployee(true);
 
     try {
-      const result = await createAdminStaff(staffForm);
+      const result = await createAdminStaff(employeeForm);
 
       setNotice(
-        result.message || "Staff account created successfully."
+        result.message || "Employee account created successfully."
       );
 
-      setStaffForm({
+      setEmployeeForm({
         name: "",
         email: "",
         password: "",
@@ -131,10 +131,10 @@ function AdminProjects() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Unable to create the staff account."
+          "Unable to create the employee account."
       );
     } finally {
-      setCreatingStaff(false);
+      setCreatingEmployee(false);
     }
   }
 
@@ -165,7 +165,7 @@ function AdminProjects() {
           </span>
 
           <h1>Project Management</h1>
-          <p>Review client projects and assign them to your staff.</p>
+          <p>Review client projects and assign them to your employees.</p>
         </div>
 
         <div className="admin-projects-stats">
@@ -180,8 +180,8 @@ function AdminProjects() {
           <article>
             <Users size={22} />
             <div>
-              <strong>{staff.length}</strong>
-              <span>Active Staff</span>
+              <strong>{employee.length}</strong>
+              <span>Active Employees</span>
             </div>
           </article>
 
@@ -189,7 +189,7 @@ function AdminProjects() {
             <FolderKanban size={22} />
             <div>
               <strong>
-                {projects.filter((project) => project.assignedStaff?.id).length}
+                {projects.filter((project) => project.assignedEmployee?.id).length}
               </strong>
               <span>Assigned Projects</span>
             </div>
@@ -208,83 +208,83 @@ function AdminProjects() {
           </div>
         )}
 
-        <section className="admin-staff-create">
-          <div className="admin-staff-create-heading">
+        <section className="admin-employee-create">
+          <div className="admin-employee-create-heading">
             <UserPlus size={24} />
             <div>
-              <h2>Create Staff Account</h2>
+              <h2>Create Employee Account</h2>
               <p>
                 Create a team member's login to manage assigned projects.
               </p>
             </div>
           </div>
 
-          <form onSubmit={handleCreateStaff}>
-            <label htmlFor="staff-name">Full name *</label>
+          <form onSubmit={handleCreateEmployee}>
+            <label htmlFor="employee-name">Full name *</label>
             <input
-              id="staff-name"
+              id="employee-name"
               name="name"
               type="text"
-              placeholder="Enter staff member's name"
-              value={staffForm.name}
-              onChange={updateStaffField}
+              placeholder="Enter employee's name"
+              value={employeeForm.name}
+              onChange={updateEmployeeField}
               minLength={2}
               maxLength={100}
               autoComplete="name"
               required
             />
 
-            <label htmlFor="staff-email">Email address *</label>
+            <label htmlFor="employee-email">Email address *</label>
             <input
-              id="staff-email"
+              id="employee-email"
               name="email"
               type="email"
-              placeholder="staff@example.com"
-              value={staffForm.email}
-              onChange={updateStaffField}
+              placeholder="employee@example.com"
+              value={employeeForm.email}
+              onChange={updateEmployeeField}
               autoComplete="email"
               required
             />
 
-            <label htmlFor="staff-password">Temporary password *</label>
+            <label htmlFor="employee-password">Temporary password *</label>
             <input
-              id="staff-password"
+              id="employee-password"
               name="password"
               type="password"
               placeholder="At least 8 characters"
-              value={staffForm.password}
-              onChange={updateStaffField}
+              value={employeeForm.password}
+              onChange={updateEmployeeField}
               minLength={8}
               autoComplete="new-password"
               required
             />
 
-            <label htmlFor="staff-company">Company (optional)</label>
+            <label htmlFor="employee-company">Company (optional)</label>
             <input
-              id="staff-company"
+              id="employee-company"
               name="company"
               type="text"
               placeholder="Company name"
-              value={staffForm.company}
-              onChange={updateStaffField}
+              value={employeeForm.company}
+              onChange={updateEmployeeField}
               maxLength={150}
             />
 
-            <label htmlFor="staff-phone">Phone number (optional)</label>
+            <label htmlFor="employee-phone">Phone number (optional)</label>
             <input
-              id="staff-phone"
+              id="employee-phone"
               name="phone"
               type="tel"
               placeholder="Phone number"
-              value={staffForm.phone}
-              onChange={updateStaffField}
+              value={employeeForm.phone}
+              onChange={updateEmployeeField}
               maxLength={30}
             />
 
-            <button type="submit" disabled={creatingStaff}>
-              {creatingStaff
+            <button type="submit" disabled={creatingEmployee}>
+              {creatingEmployee
                 ? "Creating account..."
-                : "Create Staff Account"}
+                : "Create Employee Account"}
             </button>
           </form>
         </section>
@@ -336,12 +336,12 @@ function AdminProjects() {
                 </div>
 
                 <div className="admin-assignment-row">
-                  <label htmlFor={`staff-${project.id}`}>
-                    Assign staff member
+                  <label htmlFor={`employee-${project.id}`}>
+                    Assign employee
                   </label>
 
                   <select
-                    id={`staff-${project.id}`}
+                    id={`employee-${project.id}`}
                     value={assignments[project.id] || ""}
                     onChange={(event) =>
                       setAssignments((previous) => ({
@@ -352,7 +352,7 @@ function AdminProjects() {
                   >
                     <option value="">Unassigned</option>
 
-                    {staff.map((member) => (
+                    {employee.map((member) => (
                       <option key={member._id} value={member._id}>
                         {member.name} ({member.email})
                       </option>

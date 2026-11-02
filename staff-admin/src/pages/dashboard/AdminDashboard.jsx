@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FolderKanban,
@@ -46,7 +46,7 @@ function AdminDashboard() {
   }, [loadDashboard]);
 
   const clients = users.filter((user) => user.role === "CLIENT");
-  const staff = users.filter((user) => user.role === "STAFF");
+  const employee = users.filter((user) => user.role === "STAFF");
 
   const activeProjects = projects.filter((project) =>
     ["IN_PROGRESS", "TESTING", "PLANNING", "UNDER_REVIEW"].includes(
@@ -68,10 +68,10 @@ function AdminDashboard() {
       link: "/admin/clients",
     },
     {
-      title: "Total Staff",
-      value: staff.length,
+      title: "Total Employees",
+      value: employee.length,
       icon: UserRound,
-      link: "/admin/staff",
+      link: "/admin/employee",
     },
     {
       title: "Active Projects",
@@ -87,7 +87,7 @@ function AdminDashboard() {
         <div>
           <span className="admin-eyebrow">ADMINISTRATION</span>
           <h1>Dashboard Overview</h1>
-          <p>Monitor projects, clients, staff and ongoing work.</p>
+          <p>Monitor projects, clients, employees and ongoing work.</p>
         </div>
 
         <button

@@ -1,0 +1,17 @@
+warning: in the working copy of 'client/src/pages/dashboard/AdminProjects.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'staff-admin/src/App.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'staff-admin/src/pages/dashboard/AdminProjects.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'staff-admin/src/pages/dashboard/StaffDashboard.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'staff-admin/src/pages/dashboard/StaffProjects.jsx', LF will be replaced by CRLF the next time Git touches it
+ client/src/pages/dashboard/AdminProjects.jsx       | 122 [32m++++++++++[m[31m-----------[m
+ client/src/pages/dashboard/UserManagement.jsx      |   8 [32m+[m[31m-[m
+ staff-admin/src/App.css                            |   2 [32m+[m[31m-[m
+ staff-admin/src/components/AdminLayout.jsx         |   4 [32m+[m[31m-[m
+ staff-admin/src/pages/Login.jsx                    |   6 [32m+[m[31m-[m
+ staff-admin/src/pages/dashboard/AdminDashboard.jsx |  12 [32m+[m[31m-[m
+ staff-admin/src/pages/dashboard/AdminProjects.jsx  | 122 [32m++++++++++[m[31m-----------[m
+ staff-admin/src/pages/dashboard/StaffDashboard.jsx |  24 [32m++[m[31m--[m
+ staff-admin/src/pages/dashboard/StaffProjects.jsx  |  20 [32m++[m[31m--[m
+ staff-admin/src/pages/dashboard/UserManagement.jsx |   8 [32m+[m[31m-[m
+ staff-admin/src/pages/dashboard/WorkTracking.jsx   |  52 [32m++++[m[31m-----[m
+ 11 files changed, 190 insertions(+), 190 deletions(-)

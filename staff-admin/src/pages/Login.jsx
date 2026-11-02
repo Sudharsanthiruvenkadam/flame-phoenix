@@ -51,7 +51,7 @@ function Login({ onLogin }) {
       // Update the parent App.jsx user state
       onLogin(response.user);
 
-      navigate(role === "ADMIN" ? "/admin" : "/staff");
+      navigate(role === "ADMIN" ? "/admin" : "/employee");
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -84,7 +84,7 @@ function Login({ onLogin }) {
           <h2>Welcome Back</h2>
 
           <p className="login-subtitle">
-            Sign in to your Staff or Admin account.
+            Sign in to your Employee or Admin account.
           </p>
 
           <div className="role-selector">
@@ -96,7 +96,7 @@ function Login({ onLogin }) {
                 setError("");
               }}
             >
-              Staff Login
+              Employee Login
             </button>
 
             <button
